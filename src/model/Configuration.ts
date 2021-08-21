@@ -241,6 +241,7 @@ namespace Configuration {
             '%FFMPEG% -ss %THUMBNAIL_POSITION% -y -i %INPUT% -vframes 1 -f image2 -s %THUMBNAIL_SIZE% %OUTPUT%',
         thumbnailSize: '480x270',
         thumbnailPosition: 5,
+        isEnabledDropLog: false,
         dropLog: path.join(__dirname, '..', '..', 'drop'),
         uploadTempDir: path.join(__dirname, '..', '..', 'data', 'upload'),
         isEnabledDropCheck: false,

@@ -39,9 +39,10 @@ class DropCheckerModel implements IDropCheckerModel {
      * @param logDirPath: string ログファイル保存先ディレクトリパス
      * @param srcFilePath: string ソースファイル ログファイル名生成に使用する
      * @param stream: stream.Readable drop をチェックするストリーム
+     * @param isErrorLog: boolean エラーパケットの履歴を出力するか
      * @return Promise<void>
      */
-    public async start(logDirPath: string, srcFilePath: string, readableStream: stream.Readable): Promise<void> {
+    public async start(logDirPath: string, srcFilePath: string, readableStream: stream.Readable, isErrorLog: boolean): Promise<void> {
         this.dest = await this.getLogFilePath(logDirPath, srcFilePath);
 
         // 空ファイル生成
@@ -76,25 +77,29 @@ class DropCheckerModel implements IDropCheckerModel {
         });
 
         this.tsPacketAnalyzer.on('packetError', (pid, counter, expected) => {
-            this.appendFile(
-                `error: (pid: ${this.pidToString(pid)}, counter: ${counter || '-'}, expected: ${
-                    expected || '-'
-                }, time: ${this.getTime()})\n`,
-            );
+            if (isErrorLog === true) {
+                this.appendFile(
+                    `error: (pid: ${this.pidToString(pid)}, counter: ${counter || '-'}, expected: ${expected || '-'}, time: ${this.getTime()})\n`,
+                );
+            }
             this.hasError = true;
         });
 
         this.tsPacketAnalyzer.on('packetDrop', (pid, counter, expected) => {
-            this.appendFile(
-                `drop (pid: ${this.pidToString(pid)}, counter: ${counter || '-'}, expected: ${
-                    expected || '-'
-                }, time: ${this.getTime()})\n`,
-            );
+            if (isErrorLog === true) {
+                this.appendFile(
+                    `drop (pid: ${this.pidToString(pid)}, counter: ${counter || '-'}, expected: ${expected || '-'}, time: ${this.getTime()})\n`,
+                );
+            }
             this.hasError = true;
         });
 
         this.tsPacketAnalyzer.on('packetScrambling', pid => {
-            this.appendFile(`scrambling (pid: ${this.pidToString(pid)}, time: ${this.getTime()})\n`);
+            if (isErrorLog === true) {
+                this.appendFile(
+                    `scrambling (pid: ${this.pidToString(pid)}, time: ${this.getTime()})\n`
+                );
+            }
             this.hasError = true;
         });
 

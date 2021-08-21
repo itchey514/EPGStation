@@ -120,6 +120,7 @@ export default interface IConfigFile {
     thumbnailPosition: number;
 
     // drop log
+    isEnabledDropLog: boolean; // drop log を有効にするか
     dropLog: string;
     isEnabledDropCheck: boolean; // drop check を有効にするか
 
