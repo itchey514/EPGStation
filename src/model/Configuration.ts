@@ -224,6 +224,7 @@ namespace Configuration {
         conflictPriority: 1,
         recPriority: 2,
         streamingPriority: 0,
+        isDecodeStream: false,
         timeSpecifiedStartMargin: 1,
         timeSpecifiedEndMargin: 1,
         recordedFormat: '%YEAR%年%MONTH%月%DAY%日%HOUR%時%MIN%分%SEC%秒-%TITLE%',

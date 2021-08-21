@@ -92,6 +92,8 @@ export default interface IConfigFile {
     conflictPriority: number;
     streamingPriority: number;
 
+    isDecodeStream: boolean;
+
     // 時刻指定予約マージン
     timeSpecifiedStartMargin: number;
     timeSpecifiedEndMargin: number;

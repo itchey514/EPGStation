@@ -242,7 +242,7 @@ export default class RecordingStreamCreator implements IRecordingStreamCreator {
             return this.getTimeSpecifiedStream(reserve, mirakurun);
         } else {
             // programId 指定予約
-            return mirakurun.getProgramStream(reserve.programId, true);
+            return mirakurun.getProgramStream(reserve.programId, this.config.isDecodeStream);
         }
     }
 
@@ -265,7 +265,7 @@ export default class RecordingStreamCreator implements IRecordingStreamCreator {
         }, reserve.endAt - now + 1000 * this.config.timeSpecifiedEndMargin);
 
         // mirakurun から channel stream を受け取る
-        const channelStream = await mirakurun.getServiceStream(reserve.channelId, true).catch(err => {
+        const channelStream = await mirakurun.getServiceStream(reserve.channelId, this.config.isDecodeStream).catch(err => {
             this.log.system.error(`stream get error ${reserve.channelId}`);
             this.log.system.error(err);
             clearTimeout(this.timerIndex[reserve.id]);
